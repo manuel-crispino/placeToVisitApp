@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
@@ -18,14 +18,18 @@ function App() {
   const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
 
   useEffect(()=>{
-  navigator.geolocation.getCurrentPosition((position)=>{
+  navigator.geolocation.getCurrentPosition((position)=>
+    {
     const sortedPlaces = sortPlacesByDistance(
       AVAILABLE_PLACES,
       position.coords.latitude,
       position.coords.longitude
     )
     setAvailablePlaces(sortedPlaces);
-  })
+    },(error)=>{
+    console.error('Error finding user position',error);
+    setAvailablePlaces(AVAILABLE_PLACES);
+    })
   },[]);
 
 
@@ -53,16 +57,16 @@ function App() {
   }
   }
 
-  function handleRemovePlace() {
+  const handleRemovePlace = useCallback( function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    setModalIsOpen(false)
+    setModalIsOpen(false);
       const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
-    localStorage.setItem('selectedPlaces',JSON.stringify(
-      storedIds.filter((id)=> id !== selectedPlace.current)
+    localStorage.setItem('selectedPlaces',
+      JSON.stringify(storedIds.filter((id)=> id !== selectedPlace.current)
     ));
-  }
+  },[]);
 
   return (
     <>
