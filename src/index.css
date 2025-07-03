@@ -227,3 +227,18 @@ header p {
     transform: translateY(0);
   }
 }
+
+.btn{
+  background: linear-gradient(to right, #b356564e 0%, #88888a4b 33.33%, #4caf4f58 66.66%);
+  color: white;
+  border:2px solid white;
+  border-radius:2%;
+  height: 3rem;
+  margin-top: 2%;
+  cursor: pointer;
+  padding: 1%;
+  
+}
+.btn:hover{
+   background:linear-gradient(to right, #6b33334e 0%, #3b3b3b4b 33.33%, #2e6a3058 66.66%);
+}
